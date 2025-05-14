@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decrypt File from Image</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2rem;
+      color: #3b82f6;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: block;
+      color: #374151;
+    }
+
+    .form-control-file {
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      border-radius: 10px;
+      background: #ffffff;
+      width: 100%;
+    }
+
+    .btn-submit {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto 0;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #2563eb;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      transform: scale(1.05);
+    }
+
+    .alert {
+      background: rgba(255, 245, 233, 0.9);
+      color: #b45309;
+      font-weight: 500;
+      border-radius: 12px;
+      border: 1px solid #fbbf24;
+      padding: 15px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'navigation.html' %}
+
+  <div class="container">
+    <h1>🕵️ Extract Hidden File</h1>
+
+    <form method="post" action="{% url 'decryption' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="image">Select Encrypted Image</label>
+        <input type="file" name="image" id="image" class="form-control-file" required>
+      </div>
+
+      <button type="submit" class="btn-submit">🔍 Extract File</button>
+    </form>
+
+    {% if text %}
+    <div class="alert text-center">
+      <strong>{{ text }}</strong>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

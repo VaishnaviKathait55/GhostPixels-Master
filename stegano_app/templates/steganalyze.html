@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steganalysis - Ghost Pixels</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2rem;
+      color: #2563eb;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: block;
+      color: #374151;
+    }
+
+    .form-control-file {
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      border-radius: 10px;
+      background: #ffffff;
+      width: 100%;
+    }
+
+    .btn-submit {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto 0;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #2563eb;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      transform: scale(1.05);
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #111827;
+      text-align: center;
+    }
+
+    .preview {
+      margin-top: 20px;
+      max-width: 400px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: block;
+      margin: 20px auto;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 30px;
+      font-weight: 500;
+      color: #10b981;
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'navigation.html' %}
+
+  <div class="container">
+    <h1>🔍 Analyze Image for Hidden Data</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="image">Select an Image</label>
+        <input type="file" name="image" class="form-control-file" accept="image/*" required>
+      </div>
+
+      <button type="submit" class="btn-submit">🔎 Analyze Image</button>
+    </form>
+
+    {% if image_url %}
+      <img src="{{ image_url }}" class="preview" alt="Uploaded Image">
+    {% endif %}
+
+    <!-- {% if result %}
+      <div class="result">{{ result }}</div>
+    {% endif %} -->
+
+    {% if result %}
+  <div class="result">{{ result }}</div>
+{% elif result == "" %}
+  <div class="error">No hidden message found in the image.</div>
+{% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Capacity Estimator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2563eb;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+            color: #374151;
+        }
+
+        .form-control-file {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            border-radius: 10px;
+            background: #ffffff;
+            width: 100%;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #2563eb;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            transform: scale(1.05);
+        }
+
+        .progress-bar-wrapper {
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+            height: 24px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            color: white;
+            text-align: center;
+            line-height: 24px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 30px;
+            font-weight: 500;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'navigation.html' %}
+
+    <div class="container">
+        <h2>🧠 Image Capacity Estimator</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="image">Select Image:</label>
+                {{ form.image }}
+            </div>
+
+            <div class="form-group">
+                <label for="data_file">Optional File to Embed:</label>
+                {{ form.data_file }}
+            </div>
+
+            <button type="submit">Estimate</button>
+        </form>
+
+        {% if estimated_capacity %}
+            <div class="result">
+                <p><strong>Image Capacity:</strong> {{ estimated_capacity }} KB</p>
+                {% if file_size_kb %}
+                    <p><strong>File Size:</strong> {{ file_size_kb }} KB</p>
+                    <p><strong>Usage:</strong> {{ used_percent }}%</p>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar"
+                             style="width: {{ used_percent }}%; background-color: {% if used_percent > 90 %}#f44336{% elif used_percent > 60 %}#ff9800{% else %}#4caf50{% endif %};">
+                            {{ used_percent }}%
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
